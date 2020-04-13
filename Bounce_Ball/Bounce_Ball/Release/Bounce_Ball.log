@@ -1,0 +1,31 @@
+﻿  main.cpp
+C:\Users\WHOAMI\source\repos\Bounce_Ball\Bounce_Ball\main.cpp(52,26): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+C:\Users\WHOAMI\source\repos\Bounce_Ball\Bounce_Ball\main.cpp(63,14): warning C4244: инициализация: преобразование "T" в "int", возможна потеря данных
+C:\Users\WHOAMI\source\repos\Bounce_Ball\Bounce_Ball\main.cpp(63,14): warning C4244:         with
+C:\Users\WHOAMI\source\repos\Bounce_Ball\Bounce_Ball\main.cpp(63,14): warning C4244:         [
+C:\Users\WHOAMI\source\repos\Bounce_Ball\Bounce_Ball\main.cpp(63,14): warning C4244:             T=float
+C:\Users\WHOAMI\source\repos\Bounce_Ball\Bounce_Ball\main.cpp(63,14): warning C4244:         ]
+C:\Users\WHOAMI\source\repos\Bounce_Ball\Bounce_Ball\main.cpp(64,15): warning C4244: инициализация: преобразование "T" в "int", возможна потеря данных
+C:\Users\WHOAMI\source\repos\Bounce_Ball\Bounce_Ball\main.cpp(64,15): warning C4244:         with
+C:\Users\WHOAMI\source\repos\Bounce_Ball\Bounce_Ball\main.cpp(64,15): warning C4244:         [
+C:\Users\WHOAMI\source\repos\Bounce_Ball\Bounce_Ball\main.cpp(64,15): warning C4244:             T=float
+C:\Users\WHOAMI\source\repos\Bounce_Ball\Bounce_Ball\main.cpp(64,15): warning C4244:         ]
+C:\Users\WHOAMI\source\repos\Bounce_Ball\Bounce_Ball\main.cpp(68,53): warning C4244: =: преобразование "int" в "T", возможна потеря данных
+C:\Users\WHOAMI\source\repos\Bounce_Ball\Bounce_Ball\main.cpp(68,53): warning C4244:         with
+C:\Users\WHOAMI\source\repos\Bounce_Ball\Bounce_Ball\main.cpp(68,53): warning C4244:         [
+C:\Users\WHOAMI\source\repos\Bounce_Ball\Bounce_Ball\main.cpp(68,53): warning C4244:             T=float
+C:\Users\WHOAMI\source\repos\Bounce_Ball\Bounce_Ball\main.cpp(68,53): warning C4244:         ]
+C:\Users\WHOAMI\source\repos\Bounce_Ball\Bounce_Ball\main.cpp(70,54): warning C4244: =: преобразование "int" в "T", возможна потеря данных
+C:\Users\WHOAMI\source\repos\Bounce_Ball\Bounce_Ball\main.cpp(70,54): warning C4244:         with
+C:\Users\WHOAMI\source\repos\Bounce_Ball\Bounce_Ball\main.cpp(70,54): warning C4244:         [
+C:\Users\WHOAMI\source\repos\Bounce_Ball\Bounce_Ball\main.cpp(70,54): warning C4244:             T=float
+C:\Users\WHOAMI\source\repos\Bounce_Ball\Bounce_Ball\main.cpp(70,54): warning C4244:         ]
+C:\Users\WHOAMI\source\repos\Bounce_Ball\Bounce_Ball\main.cpp(96,14): warning C4244: инициализация: преобразование "sf::Int64" в "float", возможна потеря данных
+C:\Users\WHOAMI\source\repos\Bounce_Ball\Bounce_Ball\main.cpp(109,15): warning C4305: =: усечение из "double" в "float"
+C:\Users\WHOAMI\source\repos\Bounce_Ball\Bounce_Ball\main.cpp(113,14): warning C4305: =: усечение из "double" в "float"
+C:\Users\WHOAMI\source\repos\Bounce_Ball\Bounce_Ball\main.cpp(117,34): warning C4305: =: усечение из "double" в "float"
+  Создание кода
+  Previous IPDB not found, fall back to full compilation.
+  All 78 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Создание кода завершено
+  Bounce_Ball.vcxproj -> C:\Users\WHOAMI\source\repos\Bounce_Ball\Release\Bounce_Ball.exe
