@@ -3,7 +3,7 @@
 
 using namespace sf;
 using namespace std;
-int ResW=600, ResH=400; /*разрешение экрана*/
+int ResW = 600, ResH = 400; /*разрешение экрана*/
 float offsetX = 0, offsetY = 0;
 const int H = 7;
 const int W = 40;
@@ -43,14 +43,12 @@ public:
 		Collision(0);
 
 		if (hp <= 0) {
-		gameover = true;
-		sprite.setColor(Color::Black);
+			gameover = true;
+			sprite.setColor(Color::Black);
 		}
 
-	
-
-		if (!onGround) 
-		dy = dy + 0.0005 * time;
+		if (!onGround)
+			dy = dy + 0.0005 * time;
 		rect.top += dy * time;
 		onGround = false;
 		Collision(1);
@@ -70,7 +68,7 @@ public:
 				{
 					if ((dx > 0) && (dir == 0)) rect.left = j * 64 - rect.width;
 					if ((dx < 0) && (dir == 0)) rect.left = j * 64 + 64;
-					if ((dy > 0) && (dir == 1)) { rect.top = i * 64 - rect.height;  dy = 0;   onGround = true; } 
+					if ((dy > 0) && (dir == 1)) { rect.top = i * 64 - rect.height;  dy = 0;   onGround = true; }
 					if ((dy < 0) && (dir == 1)) { rect.top = i * 64 + 64;   dy = 0; }
 				}
 
@@ -80,10 +78,6 @@ public:
 				}
 				if (TestMap[i][j] == '*')//взаимодействие с шипами
 				{
-					if ((dx > 0) && (dir == 0)) rect.left = j * 64 - rect.width;
-					if ((dx < 0) && (dir == 0)) rect.left = j * 64 + 64;
-					if ((dy > 0) && (dir == 1)) { rect.top = i * 64 - rect.height;  dy = 0;   onGround = true; }
-					if ((dy < 0) && (dir == 1)) { rect.top = i * 64 + 62;   dy = 0; }
 					hp = hp - 1; //при взаимодействии с шипами хп будет уменьшатьс€
 				}
 				if (TestMap[i][j] == 'E')//взаимодействие с концом уровн€
@@ -95,7 +89,7 @@ public:
 	}
 };
 
-int main() 
+int main()
 {
 	RenderWindow window(VideoMode(ResW, ResH), "Bounce_Ball"); //окно игры
 
@@ -162,7 +156,7 @@ int main()
 		window.draw(p.sprite);
 		window.display();
 		if (p.gameover == true) {  //закрытие игры, если она закончена
-			sleep(seconds(2));  //задержка перед закрытием
+			sleep(seconds(2));  //задержка перед закрытием 
 			return 0;
 		}
 	}
