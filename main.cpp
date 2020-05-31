@@ -2,52 +2,60 @@
 #include <SFML/Graphics.hpp>
 
 using namespace sf;
-int ResW=1920, ResH=1080; /*разрешение экрана*/
+using namespace std;
+int ResW=600, ResH=400; /*разрешение экрана*/
 float offsetX = 0, offsetY = 0;
-const int H = 12;
+const int H = 7;
 const int W = 40;
-/*карта*/
+
+//карта
 String TestMap[H] = {
-"BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
-"B                                B     B",
-"B                                B     B",
-"B                                B     B",
-"B                                B     B",
-"B         0000000             BBBB     B",
-"B                                B     B",
-"BBB                              B     B",
-"B              BB                BB    B",
-"B              BB    *     B           B",
-"B    B     00   BB ** **  BB           B",
-"BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB ",
+"BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
+"B    *   *                            B",
+"B                           *      *  B",
+"B    B    0000000000000000            B",
+"B                                  E  B",
+"B  B  *   *    B  *  B          *     B",
+"BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
 };
-/*игрок и функции */
+//класс игрока и функции
 class PLAYER {
 public:
 
 	float dx, dy;
 	FloatRect rect;
 	bool onGround;
+	bool gameover; //конец игры
 	Sprite sprite;
+	int hp = 60; //здоровье
 
 	PLAYER(Texture& image)
 	{
 		sprite.setTexture(image);
-		rect = FloatRect(3 * 64, 5 * 64, 64, 64); /*начальные координаты, где появляется шар*/
+		gameover = false;
+		rect = FloatRect(1 * 64, 1 * 64, 64, 62); //начальные координаты, где появляется шар, его хитбокс
 		dx = dy = 0;
 	};
 
-	/*функция */
+	/*функция обновления*/
 	void update(float time) {
 		rect.left += dx * time;
 		Collision(0);
 
-		if (!onGround) dy = dy + 0.0005 * time;
+		if (hp <= 0) {
+		gameover = true;
+		sprite.setColor(Color::Black);
+		}
+
+	
+
+		if (!onGround) 
+		dy = dy + 0.0005 * time;
 		rect.top += dy * time;
 		onGround = false;
 		Collision(1);
 
-		sprite.setTextureRect(IntRect(3 * 64, 0, 64, 64)); /*текстурка шара*/
+		sprite.setTextureRect(IntRect(3 * 64, 0, 64, 64)); //текстурка шара
 		sprite.setPosition(rect.left - offsetX, rect.top - offsetY);
 		dx = 0;
 	};
@@ -58,41 +66,53 @@ public:
 		for (int i = rect.top / 64; i < (rect.top + rect.height) / 64; i++)
 			for (int j = rect.left / 64; j < (rect.left + rect.width) / 64; j++)
 			{
-				if (TestMap[i][j] == 'B')
+				if (TestMap[i][j] == 'B')//коллизия с красными блоками
+				{
+					if ((dx > 0) && (dir == 0)) rect.left = j * 64 - rect.width;
+					if ((dx < 0) && (dir == 0)) rect.left = j * 64 + 64;
+					if ((dy > 0) && (dir == 1)) { rect.top = i * 64 - rect.height;  dy = 0;   onGround = true; } 
+					if ((dy < 0) && (dir == 1)) { rect.top = i * 64 + 64;   dy = 0; }
+				}
+
+				if (TestMap[i][j] == '0')//монеты
+				{
+					TestMap[i][j] = ' '; //исчезновение монет
+				}
+				if (TestMap[i][j] == '*')//взаимодействие с шипами
 				{
 					if ((dx > 0) && (dir == 0)) rect.left = j * 64 - rect.width;
 					if ((dx < 0) && (dir == 0)) rect.left = j * 64 + 64;
 					if ((dy > 0) && (dir == 1)) { rect.top = i * 64 - rect.height;  dy = 0;   onGround = true; }
-					if ((dy < 0) && (dir == 1)) { rect.top = i * 64 + 64;   dy = 0; }
+					if ((dy < 0) && (dir == 1)) { rect.top = i * 64 + 62;   dy = 0; }
+					hp = hp - 1; //при взаимодействии с шипами хп будет уменьшаться
 				}
-
-				if (TestMap[i][j] == '0')
+				if (TestMap[i][j] == 'E')//взаимодействие с концом уровня
 				{
-					TestMap[i][j] = ' ';
+					TestMap[i][j] = 'W';
+					gameover = true;
 				}
 			}
 	}
 };
 
-int main()
+int main() 
 {
 	RenderWindow window(VideoMode(ResW, ResH), "Bounce_Ball"); //окно игры
 
 	Texture tileset; //загрузка текстур
 	tileset.loadFromFile("tile.png");
 
-	Sprite tile(tileset);
-
 	PLAYER p(tileset);  // создание спрайтов
-	Sprite Ground(tileset);
+	Sprite Ground(tileset); //основной спрай игры
 
-	Clock clock;
+	Clock clock; //часы
 
 	while (window.isOpen())
 	{
-		float time = clock.getElapsedTime().asMicroseconds();
+		float time = clock.getElapsedTime().asMicroseconds(); //берём время
 		clock.restart();
-		time = time / 500;  //Скорость игры
+		time = time / 600;  //Скорость игры
+		//теперь игра зависит от времени а не от производительности процессора
 
 		Event event;
 		while (window.pollEvent(event))
@@ -100,34 +120,38 @@ int main()
 			if (event.type == Event::Closed)
 				window.close();
 		}
-
-		if (Keyboard::isKeyPressed(Keyboard::Left))
-		{
-			p.dx = -0.2; //скорость влево
+		if (!p.gameover) { //если gameover=true то мы не можем двигаться
+			if (Keyboard::isKeyPressed(Keyboard::Left))
+			{
+				p.dx = -0.23; //скорость влево
+			}
+			if (Keyboard::isKeyPressed(Keyboard::Right))
+			{
+				p.dx = 0.23; //скорость вправо
+			}
+			if (Keyboard::isKeyPressed(Keyboard::Up))
+			{
+				if (p.onGround) { p.dy = -0.36; p.onGround = false; } //прыжок
+			}
 		}
-		if (Keyboard::isKeyPressed(Keyboard::Right))
-		{
-			p.dx = 0.2; //скорость вправо
-		}
-		if (Keyboard::isKeyPressed(Keyboard::Up))
-		{
-			if (p.onGround) { p.dy = -0.55; p.onGround = false; } //прыжок
-		}
-
 		p.update(time);
 
-		if (p.rect.left > ResW / 2) offsetX = p.rect.left - ResW / 2; //камера по Х
-		if (p.rect.top > ResH) offsetY = p.rect.top - ResH; //камера по Y
+		if (p.rect.left > ResW / 2) offsetX = p.rect.left - ResW / 2; //перемещение камеры по Х
+		if (p.rect.top > ResH / 2) offsetY = p.rect.top - ResH / 2; //перемещение камеры по Y
 
-		window.clear(Color::White);
+		window.clear(Color::Cyan); //задний фон
 
-		for (int i = 0; i < H; i++) {  //Отрисовка текстур
+		for (int i = 0; i < H; i++) {  //Отрисовка карты
 			for (int j = 0; j < W; j++) {
 				if (TestMap[i][j] == 'B') Ground.setTextureRect(IntRect(0, 0, 64, 64));
 
 				if (TestMap[i][j] == '0') Ground.setTextureRect(IntRect(5 * 64, 0, 64, 64));
 
 				if (TestMap[i][j] == '*') Ground.setTextureRect(IntRect(4 * 64, 0, 64, 64));
+
+				if (TestMap[i][j] == 'E') Ground.setTextureRect(IntRect(6 * 64, 0, 64, 64));;
+
+				if (TestMap[i][j] == 'W') Ground.setTextureRect(IntRect(0, 64, 512, 128));;
 
 				if (TestMap[i][j] == ' ') continue;
 
@@ -137,7 +161,9 @@ int main()
 		}
 		window.draw(p.sprite);
 		window.display();
+		if (p.gameover == true) {  //закрытие игры, если она закончена
+			sleep(seconds(2));  //задержка перед закрытием
+			return 0;
+		}
 	}
-
-	return 0;
 }
